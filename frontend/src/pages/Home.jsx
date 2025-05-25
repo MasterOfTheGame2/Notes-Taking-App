@@ -4,6 +4,9 @@ import NoteModal from "../components/NoteModal";
 import NoteCard from "../components/NoteCard";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+console.log("API URL:", API_URL);
+
 const Home = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [notes, setNotes] = useState([]);
@@ -12,7 +15,7 @@ const Home = () => {
   const fetchNotes = async () => {
     try {
       const token = localStorage.getItem("token");
-      const { data } = await axios.get("http://localhost:5000/api/note", {
+      const { data } = await axios.get(`${API_URL}/api/note`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +44,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/note/add",
+        `${API_URL}/api/note/add`,
         { title, description },
         {
           headers: {
@@ -66,7 +69,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5000/api/note/${id}`,
+        `${API_URL}/api/note/${id}`,
         { title, description },
         {
           headers: {
@@ -90,14 +93,11 @@ const Home = () => {
   const deleteNote = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.delete(
-        `http://localhost:5000/api/note/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.delete(`${API_URL}/api/note/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.data.success) {
         console.log("Note deleted!");
@@ -125,8 +125,8 @@ const Home = () => {
       </div>
       <button
         onClick={() => {
-          setCurrentNote(null); // Clear selected note (for "add" mode)
-          setModalOpen(true); // Open the modal
+          setCurrentNote(null);
+          setModalOpen(true);
         }}
         style={{
           position: "fixed",

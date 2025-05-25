@@ -64,7 +64,7 @@ router.post("/login", async (req, res) => {
         .json({ success: false, message: "Wrong credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, "secretkeyofnoteapp123@#$&&", {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "5h",
     });
 
